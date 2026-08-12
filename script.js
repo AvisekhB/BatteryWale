@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
      SETUP: deploy the included apps-script/Code.gs as a Web App, then
      paste the resulting /exec URL below. See README.md for full steps.
      ===================================================== */
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHdfxv0jTugdE3eo2G_mT3Lr_21TdQ8jo0t2kZaJHvvxWgY9easSipuK2cSryeSbUh/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyzfFm9MMI002qd7M7URJLNDET89Bgo827cLijrtAceGuT-pf42bGmln5mTm8672uTt/exec';
 
   const contactForm = document.getElementById('contact-form');
   const formNote = document.getElementById('form-note');
