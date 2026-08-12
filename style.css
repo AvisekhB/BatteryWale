@@ -360,7 +360,9 @@ img,svg{ display:block; max-width:100%; }
   font-family:var(--font-body); font-size:0.95rem; background:var(--paper);
   resize:vertical;
 }
-.form-note{ margin-top:12px; font-size:0.85rem; color:var(--copper); }
+.form-note{ margin-top:12px; font-size:0.85rem; font-weight:600; padding:10px 12px; border-radius:6px; }
+.form-note--success{ color:var(--charge-dim); background:rgba(47,191,159,0.1); border:1px solid rgba(47,191,159,0.35); }
+.form-note--error{ color:#B3411F; background:rgba(201,122,61,0.1); border:1px solid rgba(201,122,61,0.35); }
 
 .contact-details{ display:flex; flex-direction:column; gap:16px; }
 .contact-card{ background:var(--ink); color:var(--cream); border-radius:var(--radius); padding:24px; }

@@ -48,15 +48,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* =====================================================
-     CONTACT FORM (demo only — no backend on GitHub Pages)
+     CONTACT FORM — Google Apps Script integration
+     Submits Name / Email / Contact number / Message to a Google Sheet
+     (with a timestamp) and emails you a notification. No backend server
+     needed — Apps Script does both jobs for free.
+
+     SETUP: deploy the included apps-script/Code.gs as a Web App, then
+     paste the resulting /exec URL below. See README.md for full steps.
      ===================================================== */
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxHdfxv0jTugdE3eo2G_mT3Lr_21TdQ8jo0t2kZaJHvvxWgY9easSipuK2cSryeSbUh/exec';
+
   const contactForm = document.getElementById('contact-form');
   const formNote = document.getElementById('form-note');
+
   if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      formNote.hidden = false;
+
+      if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL.indexOf('PASTE_YOUR') === 0) {
+        showFormNote('error', 'Form isn\u2019t connected yet — see README.md to add your Apps Script URL. Meanwhile, please call or email us directly below.');
+        return;
+      }
+
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const originalLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+      formNote.hidden = true;
+
+      try {
+        const formData = new FormData(contactForm);
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+
+        if (result && result.result === 'success') {
+          showFormNote('success', 'Thanks! Your message has been sent — we\u2019ll get back to you soon.');
+          contactForm.reset();
+        } else {
+          throw new Error((result && result.error) || 'Unknown error');
+        }
+      } catch (err) {
+        console.error('Contact form submission failed:', err);
+        showFormNote('error', 'Something went wrong sending your message. Please call or email us directly below.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
     });
+  }
+
+  function showFormNote(type, message) {
+    formNote.textContent = message;
+    formNote.className = 'form-note form-note--' + type;
+    formNote.hidden = false;
   }
 
   const footerYear = document.getElementById('footer-year');
